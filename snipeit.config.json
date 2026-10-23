@@ -1,0 +1,20 @@
+{
+  "baseUrl": "https://demo.snipeitapp.com",
+  "headless": false,
+  "accounts": {
+    "admin": {
+      "username": "admin",
+      "password": "password",
+      "displayName": "Admin User"
+    },
+    "demoUser": {
+      "username": "testuser",
+      "password": "password",
+      "displayName": "Test User"
+    }
+  },
+  "newAsset": {
+    "model": "Macbook Pro 13",
+    "status": "Ready to Deploy"
+  }
+}

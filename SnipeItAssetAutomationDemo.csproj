@@ -8,10 +8,18 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <SnipeItConfigFile>$(MSBuildProjectDirectory)/SnipeIt.config.json</SnipeItConfigFile>
+    <Headless Condition="'$(Headless)' == '' And Exists('$(SnipeItConfigFile)')">$([System.Text.RegularExpressions.Regex]::Match($([System.IO.File]::ReadAllText('$(SnipeItConfigFile)')), '"headless"\s*:\s*(true|false)').Groups[1].Value)</Headless>
+    <Headless Condition="'$(Headless)' == ''">false</Headless>
+    <VSTestCLIRunSettings>Playwright.LaunchOptions.Headless=$(Headless)</VSTestCLIRunSettings>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
-    <PackageReference Include="Microsoft.Playwright.NUnit" Version="1.64.0" />
+    <PackageReference Include="Microsoft.Playwright" Version="1.63.0" />
+    <PackageReference Include="Microsoft.Playwright.NUnit" Version="1.63.0" />
     <PackageReference Include="NUnit" Version="4.3.2" />
     <PackageReference Include="NUnit.Analyzers" Version="4.7.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
@@ -19,6 +27,10 @@
 
   <ItemGroup>
     <Using Include="NUnit.Framework" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="SnipeIt.config.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
