@@ -33,7 +33,7 @@ public sealed class CreateAssetPage
 
     public static string Url => SnipeItSettings.Url("/hardware/create");
 
-    public async Task<CreatedAsset> CreateCheckedOutToRandomUserAsync(NewAsset asset)
+     public async Task<CreatedAsset> CreateAssetAsync(NewAsset asset)
     {
         await GoToAsync();
         var tag = await GetAssetTagAsync();

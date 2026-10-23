@@ -13,9 +13,9 @@ public class AssetTests : SnipeItTest
     }
 
     [Test]
-    public async Task CreateReadyToDeployMacbookCheckedOutToRandomUser()
+    public async Task AssetWorkflow()
     {
-        var asset = await new CreateAssetPage(Page).CreateCheckedOutToRandomUserAsync(SnipeItSettings.NewAsset);
+        var asset = await new CreateAssetPage(Page).CreateAssetAsync(SnipeItSettings.NewAsset);
 
         var assetsListPage = new AssetsListPage(Page);
         var assetRow = await assetsListPage.FindAssetAsync(asset.Tag);
@@ -23,7 +23,7 @@ public class AssetTests : SnipeItTest
 
         var detailsPage = await assetsListPage.OpenAssetAsync(assetRow, asset.Tag);
         await ExpectDetailsMatchAsync(detailsPage, asset);
-        await ExpectCreatedAndCheckedOutHistoryAsync(detailsPage, asset);
+        await ExpectHistoryAsync(detailsPage, asset);
     }
 
     private async Task ExpectListRowMatchesAsync(ILocator row, CreatedAsset asset)
@@ -43,7 +43,7 @@ public class AssetTests : SnipeItTest
         await Expect(detailsPage.AssignedUserLink(asset.AssignedUser)).ToBeVisibleAsync();
     }
 
-    private async Task ExpectCreatedAndCheckedOutHistoryAsync(AssetDetailsPage detailsPage, CreatedAsset asset)
+    private async Task ExpectHistoryAsync(AssetDetailsPage detailsPage, CreatedAsset asset)
     {
         await detailsPage.OpenHistoryTabAsync();
         await Expect(detailsPage.HistoryRows).ToHaveCountAsync(2);
