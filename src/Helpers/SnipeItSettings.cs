@@ -2,11 +2,6 @@ using System.Text.Json;
 
 namespace SnipeITDemo.Helpers;
 
-/// <summary>
-/// Test settings, read from SnipeIt.config.json next to the test assembly.
-/// Any value can be overridden with its environment variable (e.g. SNIPEIT_BASE_URL),
-/// which is useful for CI or for keeping real passwords out of the file.
-/// </summary>
 public static class SnipeItSettings
 {
     private const string ConfigFileName = "SnipeIt.config.json";
@@ -25,7 +20,10 @@ public static class SnipeItSettings
         Get("SNIPEIT_USER_PASSWORD", Config.Accounts.DemoUser.Password),
         Get("SNIPEIT_USER_DISPLAY_NAME", Config.Accounts.DemoUser.DisplayName));
 
-    /// <summary>Builds a full URL from a site path such as "/hardware".</summary>
+    public static NewAsset NewAsset { get; } = new(
+        Get("SNIPEIT_ASSET_MODEL", Config.NewAsset.Model),
+        Get("SNIPEIT_ASSET_STATUS", Config.NewAsset.Status));
+
     public static string Url(string path) => $"{BaseUrl}/{path.TrimStart('/')}";
 
     private static string Get(string environmentVariable, string configValue)
@@ -48,11 +46,9 @@ public static class SnipeItSettings
             ?? throw new InvalidOperationException($"{ConfigFileName} is empty.");
     }
 
-    // Shape of SnipeIt.config.json.
-    private sealed record SnipeItConfig(string BaseUrl, AccountsConfig Accounts);
+    private sealed record SnipeItConfig(string BaseUrl, AccountsConfig Accounts, NewAsset NewAsset);
 
     private sealed record AccountsConfig(Account Admin, Account DemoUser);
 }
 
-/// <param name="DisplayName">The name Snipe-IT shows for this account, e.g. in menus and history.</param>
 public sealed record Account(string Username, string Password, string DisplayName);
